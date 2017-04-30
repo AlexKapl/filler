@@ -5,12 +5,18 @@
 # include <fcntl.h>
 # include "errno.h"
 
+# define N 0
+# define E 1
+# define W 2
+# define S 3
+
 typedef struct	s_enemy
 {
-	size_t		min_x[2];
-	size_t		min_y[2];
-	size_t		max_x[2];
-	size_t		max_y[2];
+	char		fig[2];
+	size_t		w[2];
+	size_t		n[2];
+	size_t		e[2];
+	size_t		s[2];
 }				t_enemy;
 
 typedef struct	s_piece
@@ -18,22 +24,23 @@ typedef struct	s_piece
 	char		**place;
 	size_t		width;
 	size_t		height;
-	size_t		min_x[2];
-	size_t		min_y[2];
-	size_t		max_x[2];
-	size_t		max_y[2];
+	size_t		w[2];
+	size_t		n[2];
+	size_t		e[2];
+	size_t		s[2];
 }				t_piece;
 
 typedef struct	s_fill
 {
 	char		fig[2];
 	char		**map;
+	int			front;
 	size_t		width;
 	size_t		height;
-	size_t		min_x[2];
-	size_t		min_y[2];
-	size_t		max_x[2];
-	size_t		max_y[2];
+	size_t		w[2];
+	size_t		n[2];
+	size_t		e[2];
+	size_t		s[2];
 	t_piece		*piece;
 	t_enemy		*enemy;
 }				t_fill;

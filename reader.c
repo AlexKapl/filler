@@ -9,6 +9,8 @@ void		fill_get_info(t_fill *fill)
 	tmp = ft_strchr(buff, 'p');
 	fill->fig[0] = (char)(*(tmp + 1) == '2' ? 'x' : 'o');
 	fill->fig[1] = (char)(fill->fig[0] - 32);
+	fill->enemy->fig[0] = (char)(fill->fig[0] == 'x' ? 'o' : 'x');
+	fill->enemy->fig[1] = (char)(fill->enemy->fig[0] - 32);
 	free(buff);
 	get_next_line(0, &buff);
 	tmp = buff + 8;
@@ -22,26 +24,24 @@ void		fill_get_info(t_fill *fill)
 static void	fill_read_piece(t_fill *fill, int fd)
 {
 	char	*buff;
-	char	*tmp;
+	char	**tmp;
 	t_piece	piece;
 	size_t	i;
 
 	i = 0;
 	get_next_line(0, &buff);
-	tmp = buff + 6;
-	piece.height = (size_t)ft_atoi(tmp);
-	while (isdigit(*tmp))
-		tmp++;
-	piece.width = (size_t)ft_atoi(tmp);
+	tmp = ft_strsplit(buff, ' ');
 	free(buff);
+	piece.height = (size_t)ft_atoi(tmp[1]);
+	piece.width = (size_t)ft_atoi(tmp[2]);
+	ft_tabdel(tmp, -1);
 	piece.place = (char**)malloc(sizeof(char*) * piece.height);
-	while (i < piece.height)
+	while (i++ < piece.height)
 	{
 		get_next_line(0, &buff);
 		piece.place[i] = ft_strdup(buff);
 		ft_printf("{fd}%s\n", fd, piece.place[i]);
 		free(buff);
-		i++;
 	}
 	ft_printf("{fd}\n\n", fd);
 	fill->piece = &piece;
@@ -76,10 +76,13 @@ void		fill_reader(t_fill *fill)
 	fd1 = open("piece", O_WRONLY);
 	while (get_next_line(0, &buff) > 0)
 	{
-		ft_printf("{fd}%s\n", fd, buff);
-		fill_read_map(fill, fd);
-		fill_read_piece(fill, fd1);
-		fill_place_piece(fill);
+		if (*buff == ' ')
+			fill_read_map(fill, fd);
+		else if (ft_strstr(buff, "Piece"))
+		{
+			fill_read_piece(fill, fd1);
+//			fill_place_piece(fill);
+		}
 		free(buff);
 	}
 	close(fd);

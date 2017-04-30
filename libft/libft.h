@@ -6,7 +6,7 @@
 /*   By: akaplyar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 12:07:31 by akaplyar          #+#    #+#             */
-/*   Updated: 2017/04/02 18:59:03 by akaplyar         ###   ########.fr       */
+/*   Updated: 2017/04/30 16:32:26 by akaplyar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void				ft_striter(char *s, void (*f)(char *));
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 void				ft_strcapitalizer(char *str);
 void				ft_int_sort(int *tab, size_t size);
+void				ft_tabdel(char **tab, int count);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 int					ft_atoi(const char *str);
 int					ft_atoi_base(const char *str, int base);

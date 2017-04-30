@@ -6,7 +6,7 @@
 #    By: akaplyar <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/29 11:15:59 by akaplyar          #+#    #+#              #
-#    Updated: 2017/04/02 20:04:00 by akaplyar         ###   ########.fr        #
+#    Updated: 2017/04/30 16:31:49 by akaplyar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ OBJECT = ft_bzero.o ft_isalnum.o ft_isalpha.o ft_isascii.o ft_isdigit.o ft_ispri
 		 ft_lstdel.o ft_isspace.o ft_realloc.o ft_abs.o ft_int_sort.o ft_strrev.o\
 		 ft_lst_push_back.o get_next_line.o ft_lstcount.o ft_strcapitalizer.o\
 		 ft_atoi_base.o hsv.o hsv_colors.o ft_llitoa.o ft_lst_sort.o ft_strconcat.o\
-		 ft_dir_path.o
+		 ft_dir_path.o ft_tabdel.o
 
 
 P_OBJECT = ft_printf.o help_int.o parse_int.o parse_str.o finder.o type_finder.o\
