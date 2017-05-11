@@ -15,7 +15,7 @@
 # include "libft.h"
 # include <stdlib.h>
 # include <unistd.h>
-# define BUFF_SIZE 42
+# define BUFF_SIZE 100
 
 typedef struct		s_mfd
 {

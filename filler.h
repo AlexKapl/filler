@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   filler.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akaplyar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/05/11 16:26:35 by akaplyar          #+#    #+#             */
+/*   Updated: 2017/05/11 16:26:36 by akaplyar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FILLER_H
 #define FILLER_H
 
@@ -34,13 +46,13 @@ typedef struct	s_fill
 {
 	char		fig[2];
 	char		**map;
-	int			front;
 	size_t		width;
 	size_t		height;
 	size_t		w[2];
 	size_t		n[2];
 	size_t		e[2];
 	size_t		s[2];
+	size_t		c[2];
 	t_piece		*piece;
 	t_enemy		*enemy;
 }				t_fill;

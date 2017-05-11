@@ -6,13 +6,13 @@
 /*   By: akaplyar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/16 19:05:33 by akaplyar          #+#    #+#             */
-/*   Updated: 2017/04/01 14:33:11 by akaplyar         ###   ########.fr       */
+/*   Updated: 2017/05/11 15:40:17 by akaplyar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static t_mfd	*find_mfd(const size_t fd, t_mfd **begin)
+static t_mfd	*gnl_find_mfd(const size_t fd, t_mfd **begin)
 {
 	t_mfd	*mfd;
 
@@ -29,7 +29,7 @@ static char		*gnl_make_line(int fd, t_mfd **begin)
 	char		*end;
 	char		*ptr;
 
-	mfd = find_mfd(fd, begin);
+	mfd = gnl_find_mfd(fd, begin);
 	if (!mfd->content)
 		return (NULL);
 	if ((end = ft_strchr(mfd->content, '\n')))
@@ -43,7 +43,7 @@ static char		*gnl_make_line(int fd, t_mfd **begin)
 	}
 	else
 	{
-		if (!(str = ft_strdup((char*)mfd->content)))
+		if (!(str = ft_strdup(mfd->content)))
 			return (NULL);
 		free(mfd->content);
 		mfd->content = NULL;
@@ -51,12 +51,12 @@ static char		*gnl_make_line(int fd, t_mfd **begin)
 	return (str);
 }
 
-static int		make_mfd(int fd, char *buff, t_mfd **begin)
+static int		gnl_make_mfd(int fd, char *buff, t_mfd **begin)
 {
 	t_mfd		*mfd;
 	char		*ptr;
 
-	mfd = find_mfd((size_t)fd, begin);
+	mfd = gnl_find_mfd((size_t)fd, begin);
 	if (!mfd)
 	{
 		if (!(mfd = (t_mfd *)ft_lstnew((void*)buff, (ft_strlen(buff) + 1))))
@@ -76,24 +76,43 @@ static int		make_mfd(int fd, char *buff, t_mfd **begin)
 	return (0);
 }
 
+static char		*gnl_check_buff(int fd, t_mfd **begin)
+{
+	t_mfd		*mfd;
+
+	mfd = gnl_find_mfd(fd, begin);
+	if (mfd)
+	{
+		if (mfd->content)
+			if (ft_strchr(mfd->content, '\n'))
+				return (gnl_make_line(fd, begin));
+		return (NULL);
+	}
+	else
+		return (NULL);
+}
+
 int				get_next_line(int fd, char **line)
 {
 	static t_mfd	*begin;
 	char			buff[BUFF_SIZE + 1];
 	int				ret;
-	int				stat;
 
 	if (fd < 0 || !line || read(fd, 0, 0) < 0)
 		return (-1);
+	if ((*line = gnl_check_buff(fd, &begin)))
+		return (1);
 	while ((ret = read(fd, buff, BUFF_SIZE)) != 0)
 	{
+		if (ret < 0)
+			return (-1);
 		buff[ret] = '\0';
-		if ((stat = make_mfd(fd, buff, &begin)) > 0)
+		if ((ret = gnl_make_mfd(fd, buff, &begin)) > 0)
 		{
 			*line = gnl_make_line(fd, &begin);
 			return (1);
 		}
-		if (stat < 0)
+		if (ret < 0)
 			return (-1);
 	}
 	if ((*line = gnl_make_line(fd, &begin)))

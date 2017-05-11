@@ -22,7 +22,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 MAKE_LIB = $(MAKE) -C $(LIB_PATH)
 
-OBJ = main.o reader.o
+OBJ = main.o reader.o checker.o placer.o
 
 .PHONY: clean fclean re
 
