@@ -12,55 +12,50 @@
 
 #include "filler.h"
 
-int				_get_next_line(int fd, char **line);
-
 void		fill_get_info(t_fill *fill)
 {
 	char	*buff;
 	char	*tmp;
+	char	**tab;
 
-	_get_next_line(0, &buff);
+	buff = NULL;
+	get_line_by_line(0, &buff);
 	tmp = ft_strchr(buff, 'p');
-	fill->fig[0] = (char)(*(tmp + 1) == '2' ? 'x' : 'o');
-	fill->fig[1] = (char)(fill->fig[0] - 32);
-	fill->enemy->fig[0] = (char)(fill->fig[0] == 'x' ? 'o' : 'x');
-	fill->enemy->fig[1] = (char)(fill->enemy->fig[0] - 32);
+	fill->fig = (char)(*(tmp + 1) == '2' ? 'X' : 'O');
 	free(buff);
-	_get_next_line(0, &buff);
-	tmp = buff + 8;
-	fill->height = (size_t)ft_atoi(tmp);
-	while (isdigit(*tmp))
-		tmp++;
-	fill->width = (size_t)ft_atoi(tmp);
+	get_line_by_line(0, &buff);
+	tab = ft_strsplit(buff, ' ');
+	fill->height = (size_t)ft_atoi(tab[1]);
+	fill->width = (size_t)ft_atoi(tab[2]);
+	ft_tabdel(tab, -1);
 	free(buff);
 }
 
-static void	fill_read_piece(t_fill *fill, char *data, int fd)
+static void	fill_read_piece(t_fill *fill, char *data)
 {
 	char	*buff;
 	char	**tmp;
-	t_piece	*piece;
+	t_piece	*p;
 	size_t	i;
 
 	i = 0;
-	piece = (t_piece*)malloc(sizeof(t_piece));
+	p = (t_piece*)malloc(sizeof(t_piece));
 	tmp = ft_strsplit(data, ' ');
-	piece->height = (size_t)ft_atoi(tmp[1]);
-	piece->width = (size_t)ft_atoi(tmp[2]);
+	p->height = (size_t)ft_atoi(tmp[1]);
+	p->width = (size_t)ft_atoi(tmp[2]);
 	ft_tabdel(tmp, -1);
-	piece->place = (char**)malloc(sizeof(char*) * piece->height);
-	while (i++ < piece->height)
+	p->place = (char**)malloc(sizeof(char*) * p->height);
+	while (i < p->height)
 	{
-		_get_next_line(0, &buff);
-		piece->place[i - 1] = ft_strdup(buff);
-		ft_printf("{fd}%s\n", fd, piece->place[i - 1]);
+		get_line_by_line(0, &buff);
+		p->place[i] = ft_strdup(buff);
 		free(buff);
+		i++;
 	}
-	ft_printf("{fd}\n\n", fd);
-	fill->piece = piece;
+	fill->p = p;
 }
 
-static void	fill_read_map(t_fill *fill, int fd)
+static void	fill_read_map(t_fill *fill)
 {
 	size_t	i;
 	char	*buff;
@@ -68,36 +63,28 @@ static void	fill_read_map(t_fill *fill, int fd)
 	i = 0;
 	while (i < fill->height)
 	{
-		_get_next_line(0, &buff);
-		free(fill->map[i]);
-		fill->map[i] = ft_strdup(ft_strchr(buff, '.'));
+		get_line_by_line(0, &buff);
+		fill->map[i] = ft_strdup(buff + 4);
 		ft_printf("|%s|\n", fill->map[i]);
 		free(buff);
 		i++;
 	}
-	ft_printf("{fd}\n\n", fd);
 }
 
 void		fill_reader(t_fill *fill)
 {
 	char	*buff;
-	int		fd;
-	int		fd1;
 
-	fd = open("log", O_WRONLY);
-	fd1 = open("piece", O_WRONLY);
-	while (_get_next_line(0, &buff) > 0)
+	while (get_line_by_line(0, &buff) > 0)
 	{
-		if (*buff == ' ')
-			fill_read_map(fill, fd);
-		else if (ft_strstr(buff, "Piece"))
-		{
-			fill_read_piece(fill, buff, fd1);
-			fill_drop_edge(fill);
-			fill_place_piece(fill);
-		}
+		fill_read_map(fill);
 		free(buff);
+		get_line_by_line(0, &buff);
+		fill_read_piece(fill, buff);
+		free(buff);
+		fill_drop_pos(fill);
+		fill_check_map(fill);
+		fill_place_piece(fill);
+		fill_free_data(fill);
 	}
-	close(fd);
-	close(fd1);
 }

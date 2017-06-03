@@ -12,95 +12,61 @@
 
 #include "filler.h"
 
-static void fill_check_piece_edge(t_fill *fill, size_t i, size_t j)
+void		fill_drop_pos(t_fill *fill)
 {
-	if (fill->piece->w[1] > j)
+	fill->x = 0;
+	fill->max[0] = 0;
+	fill->max[1] = 0;
+	fill->min[0] = fill->height - 1;
+	fill->min[1] = fill->width - 1;
+	fill->out_count = 0;
+	fill->out[0] = 0;
+	fill->out[1] = 0;
+}
+
+static void	fill_check_pos(t_fill *fill, size_t i, size_t j)
+{
+	if (fill->min[0] > i)
+		fill->min[0] = i;
+	if (fill->min[1] > j)
+		fill->min[1] = j;
+	if (fill->max[0] < i)
+		fill->max[0] = i;
+	if (fill->max[1] < j)
+		fill->max[1] = j;
+	if (!fill->pos[0] && !fill->pos[1])
 	{
-		fill->piece->w[0] = i;
-		fill->piece->w[1] = j;
-	}
-	if (fill->piece->n[0] > i)
-	{
-		fill->piece->n[0] = i;
-		fill->piece->n[1] = j;
-	}
-	if (fill->piece->e[1] <= j)
-	{
-		fill->piece->e[0] = i;
-		fill->piece->e[1] = j;
-	}
-	if (fill->piece->s[0] <= i)
-	{
-		fill->piece->s[0] = i;
-		fill->piece->s[1] = j;
+		fill->pos[0] = i;
+		fill->pos[1] = j;
+		if (fill->pos[0] < fill->c[0])
+			fill->edge[0] = 0;
+		else
+			fill->edge[0] = fill->height - 1;
+		if (fill->pos[1] < fill->c[1])
+			fill->edge[1] = 0;
+		else
+			fill->edge[1] = fill->width - 1;
 	}
 }
 
-static void fill_check_enemy_edge(t_fill *fill, size_t i, size_t j)
+static void	fill_get_edge(t_fill *fill)
 {
-	if (fill->enemy->w[1] > j)
-	{
-		fill->enemy->w[0] = i;
-		fill->enemy->w[1] = j;
-	}
-	if (fill->enemy->n[0] > i)
-	{
-		fill->enemy->n[0] = i;
-		fill->enemy->n[1] = j;
-	}
-	if (fill->enemy->e[1] <= j)
-	{
-		fill->enemy->e[0] = i;
-		fill->enemy->e[1] = j;
-	}
-	if (fill->enemy->s[0] <= i)
-	{
-		fill->enemy->s[0] = i;
-		fill->enemy->s[1] = j;
-	}
-}
-
-static void fill_check_edge(t_fill *fill, size_t i, size_t j)
-{
-	if (fill->w[1] > j)
-	{
-		fill->w[0] = i;
-		fill->w[1] = j;
-	}
-	if (fill->n[0] > i)
-	{
-		fill->n[0] = i;
-		fill->n[1] = j;
-	}
-	if (fill->e[1] <= j)
-	{
-		fill->e[0] = i;
-		fill->e[1] = j;
-	}
-	if (fill->s[0] <= i)
-	{
-		fill->s[0] = i;
-		fill->s[1] = j;
-	}
-}
-
-void fill_check_piece(t_fill *fill)
-{
-	size_t i;
-	size_t j;
-
-	i = 0;
-	while (i < fill->piece->height)
-	{
-		j = 0;
-		while (j < fill->piece->width)
-		{
-			if (fill->piece->place[i][j] == '*')
-				fill_check_piece_edge(fill, i ,j);
-			j++;
-		}
-		i++;
-	}
+	if (fill->min[0] <= (fill->p->height - 1))
+		fill->min[0] = 0;
+	else
+		fill->min[0] -= (fill->p->height - 1);
+	if (fill->min[1] <= (fill->p->width - 1))
+		fill->min[0] = 0;
+	else
+		fill->min[1] -= (fill->p->width - 1);
+	if (fill->max[0] + fill->p->height - 1 >= fill->height)
+		fill->max[0] = fill->height - 1;
+	else
+		fill->max[0] += (fill->p->height - 1);
+	if (fill->max[1] + fill->p->width - 1 >= fill->width)
+		fill->max[1] = fill->width - 1;
+	else
+		fill->max[1] += (fill->p->width - 1);
 }
 
 void fill_check_map(t_fill *fill)
@@ -114,13 +80,17 @@ void fill_check_map(t_fill *fill)
 		j = 0;
 		while (j < fill->width)
 		{
-			if (fill->map[i][j] == fill->fig[0] ||
-					fill->map[i][j] == fill->fig[1])
-				fill_check_edge(fill, i ,j);
-			else if (fill->map[i][j] != '.')
-				fill_check_enemy_edge(fill, i, j);
+			if (ft_toupper(fill->map[i][j]) == fill->fig)
+				fill_check_pos(fill, i ,j);
+			else if (fill->map[i][j] != '.'
+					 && !fill->e_pos[0] && !fill->e_pos[1])
+			{
+				fill->e_pos[0] = i;
+				fill->e_pos[1] = j;
+			}
 			j++;
 		}
 		i++;
 	}
+	fill_get_edge(fill);
 }
