@@ -35,24 +35,22 @@ static void	fill_read_piece(t_fill *fill, char *data)
 {
 	char	*buff;
 	char	**tmp;
-	t_piece	*p;
 	size_t	i;
 
 	i = 0;
-	p = (t_piece*)malloc(sizeof(t_piece));
 	tmp = ft_strsplit(data, ' ');
-	p->height = (size_t)ft_atoi(tmp[1]);
-	p->width = (size_t)ft_atoi(tmp[2]);
+	fill->p->height = (size_t)ft_atoi(tmp[1]);
+	fill->p->width = (size_t)ft_atoi(tmp[2]);
 	ft_tabdel(tmp, -1);
-	p->place = (char**)malloc(sizeof(char*) * p->height);
-	while (i < p->height)
+	fill->p->place = (char**)malloc(sizeof(char*) * fill->p->height);
+	while (i < fill->p->height)
 	{
 		get_line_by_line(0, &buff);
-		p->place[i] = ft_strdup(buff);
+		fill->p->place[i] = ft_strdup(buff);
+//		ft_printf("|%s|\n", fill->p->place[i]);
 		free(buff);
 		i++;
 	}
-	fill->p = p;
 }
 
 static void	fill_read_map(t_fill *fill)
@@ -61,11 +59,12 @@ static void	fill_read_map(t_fill *fill)
 	char	*buff;
 
 	i = 0;
+	fill->map = (char**)malloc(sizeof(char*) * fill->height);
 	while (i < fill->height)
 	{
 		get_line_by_line(0, &buff);
 		fill->map[i] = ft_strdup(buff + 4);
-		ft_printf("|%s|\n", fill->map[i]);
+//		ft_printf("|%s|\n", fill->map[i]);
 		free(buff);
 		i++;
 	}
@@ -77,14 +76,16 @@ void		fill_reader(t_fill *fill)
 
 	while (get_line_by_line(0, &buff) > 0)
 	{
-		fill_read_map(fill);
+		if (*buff == ' ')
+			fill_read_map(fill);
+		else if (ft_strstr(buff, "Piece"))
+		{
+			fill_read_piece(fill, buff);
+			fill_drop_pos(fill);
+			fill_check_map(fill);
+			fill_place_piece(fill);
+			fill_free_data(fill);
+		}
 		free(buff);
-		get_line_by_line(0, &buff);
-		fill_read_piece(fill, buff);
-		free(buff);
-		fill_drop_pos(fill);
-		fill_check_map(fill);
-		fill_place_piece(fill);
-		fill_free_data(fill);
 	}
 }

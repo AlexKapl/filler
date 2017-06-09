@@ -6,7 +6,7 @@
 #    By: akaplyar <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/29 11:15:59 by akaplyar          #+#    #+#              #
-#    Updated: 2017/04/18 19:45:36 by akaplyar         ###   ########.fr        #
+#    Updated: 2017/06/09 17:05:20 by akaplyar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,9 @@ $(NAME):
 
 fill:
 	./resources/filler_vm -f resources/maps/map00 -p1 resources/players/carli.filler -p2 ./filler
+
+fil:
+	./resources/filler_vm -f resources/maps/map00 -p1 resources/players/carli.filler -p2 ./filler_bonus/filler
 
 $(OBJ): $(HEADER)
 

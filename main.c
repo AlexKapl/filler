@@ -12,26 +12,37 @@
 
 #include "filler.h"
 
+void	ft_tabdeli(char **tab, int count)
+{
+	int i;
+
+	i = 0;
+	if (count < 0)
+	{
+		while (*tab)
+		{
+			free(*tab);
+			tab++;
+		}
+		ft_memdel((void**)tab);
+	}
+	else
+	{
+		while (i < count)
+			free(tab[i++]);
+//		ft_memdel((void**)tab);
+	}
+}
+
 void		fill_free_data(t_fill *fill)
 {
-	ft_tabdel(fill->map, (int)fill->height);
-	ft_tabdel(fill->p->place, (int)fill->p->height);
-	ft_memdel((void **)fill->p);
-	fill->p = NULL;
-	fill->map = NULL;
+	ft_tabdeli(fill->map, (int)fill->height);
+	ft_tabdeli(fill->p->place, (int)fill->p->height);
 }
 
 static void	fill_map_init(t_fill *fill)
 {
-	size_t	i;
-
-	i = 0;
-	fill->map = (char**)malloc(sizeof(char*) * fill->height);
-	while (i < fill->height)
-	{
-		fill->map[i] = (char*)malloc(fill->width);
-		i++;
-	}
+	fill->p = (t_piece*)malloc(sizeof(t_piece));
 	fill->pos[0] = 0;
 	fill->pos[1] = 0;
 	fill->e_pos[0] = 0;

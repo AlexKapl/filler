@@ -26,15 +26,15 @@ static void	fill_apply_strategy(t_fill *fill, size_t i, size_t j, size_t way)
 
 	if (way)
 	{
-		ss = ft_abs((int)(fill->out[0] - fill->pos[0]) +
-					(int)(fill->out[1] - fill->pos[1]));
-		gg = ft_abs((int)(fill->pos[0] - i) + (int)(fill->pos[1] - j));
+		ss = ft_abs(((int)fill->out[0] - (int)fill->pos[0]) +
+					((int)fill->out[1] - (int)fill->pos[1]));
+		gg = ft_abs(((int)fill->pos[0] - (int)i) + ((int)fill->pos[1] - (int)j));
 	}
 	else
 	{
-		ss = ft_abs((int)(fill->out[0] - fill->e_pos[0]) +
-					(int)(fill->out[1] - fill->e_pos[1]));
-		gg = ft_abs((int)(fill->e_pos[0] - i) + (int)(fill->e_pos[1] - j));
+		ss = ft_abs(((int)fill->out[0] - (int)fill->e_pos[0]) +
+					((int)fill->out[1] - (int)fill->e_pos[1]));
+		gg = ft_abs(((int)fill->e_pos[0] - (int)i) + ((int)fill->e_pos[1] - (int)j));
 	}
 	if (gg < ss)
 		fill_save_out(fill, i, j);
@@ -68,12 +68,13 @@ static int	fill_check_place(t_fill *fill, size_t i, size_t j)
 	size_t	x;
 
 	y = 0;
+	fill->x = 0;
 	while (y < fill->p->height)
 	{
 		x = 0;
 		while (x < fill->p->width)
 		{
-			if (fill->map[i + y][j + x] != '.')
+			if (fill->map[i + y][j + x] != '.' && fill->p->place[y][x] != '.')
 			{
 				if (ft_toupper(fill->map[i + y][j + x]) != fill->fig)
 					return (0);

@@ -14,7 +14,6 @@
 
 void		fill_drop_pos(t_fill *fill)
 {
-	fill->x = 0;
 	fill->max[0] = 0;
 	fill->max[1] = 0;
 	fill->min[0] = fill->height - 1;
@@ -59,14 +58,16 @@ static void	fill_get_edge(t_fill *fill)
 		fill->min[0] = 0;
 	else
 		fill->min[1] -= (fill->p->width - 1);
-	if (fill->max[0] + fill->p->height - 1 >= fill->height)
-		fill->max[0] = fill->height - 1;
-	else
-		fill->max[0] += (fill->p->height - 1);
-	if (fill->max[1] + fill->p->width - 1 >= fill->width)
-		fill->max[1] = fill->width - 1;
-	else
-		fill->max[1] += (fill->p->width - 1);
+	fill->max[0] += (fill->p->height - 1);
+	while (fill->max[0] >= fill->height)
+		fill->max[0]--;
+	if (fill->max[0] == fill->min[0])
+		fill->max[0]++;
+	fill->max[1] += (fill->p->width - 1);
+	while (fill->max[1] >= fill->width)
+		fill->max[1]--;
+	if (fill->max[1] == fill->min[1])
+		fill->max[1]++;
 }
 
 void fill_check_map(t_fill *fill)
