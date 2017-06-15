@@ -12,7 +12,7 @@
 
 #include "filler.h"
 
-static void	fill_save_out(t_fill *fill, size_t i, size_t j)
+void	fill_save_out(t_fill *fill, size_t i, size_t j)
 {
 	fill->out[0] = i;
 	fill->out[1] = j;
@@ -52,9 +52,7 @@ static int	fill_check_strategy(t_fill *fill, size_t i, size_t j)
 	y = fill->c[0];
 	x = fill->c[1];
 	m = fill->map;
-	if (!fill->sh[0])
-		return (fill_make_shield(fill, i, j));
-	else if (m[y][x] == '.' && m[y][x + 1] == '.' && m[y + 1][x + 1] == '.' &&
+	if (m[y][x] == '.' && m[y][x + 1] == '.' && m[y + 1][x + 1] == '.' &&
 		m[y + 1][x] == '.' && m[y + 1][x - 1] == '.' && m[y][x - 1] == '.' &&
 		m[y - 1][x - 1] == '.' && m[y - 1][x] == '.' && m[y - 1][x + 1] == '.')
 		way_out = 1;
@@ -67,7 +65,7 @@ static int	fill_check_strategy(t_fill *fill, size_t i, size_t j)
 	return (0);
 }
 
-static int	fill_check_place(t_fill *fill, size_t i, size_t j)
+int			fill_check_place(t_fill *fill, size_t i, size_t j)
 {
 	size_t	y;
 	size_t	x;
@@ -108,9 +106,8 @@ void		fill_place_piece(t_fill *fill)
 		{
 			if (fill_check_place(fill, i, j))
 			{
-				if (fill->out_count || !fill->sh[1])
-					if (fill_check_strategy(fill, i, j))
-						return ;
+				if (fill->out_count)
+					fill_check_strategy(fill, i, j);
 				else
 					fill_save_out(fill, i, j);
 			}

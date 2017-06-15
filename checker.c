@@ -37,11 +37,11 @@ static void	fill_check_pos(t_fill *fill, size_t i, size_t j)
 	{
 		fill->pos[0] = i;
 		fill->pos[1] = j;
-		if (fill->pos[0] < fill->c[0])
+		if (fill->pos[0] > fill->c[0])
 			fill->edge[0] = 0;
 		else
 			fill->edge[0] = fill->height - 1;
-		if (fill->pos[1] < fill->c[1])
+		if (fill->pos[1] > fill->c[1])
 			fill->edge[1] = 0;
 		else
 			fill->edge[1] = fill->width - 1;
