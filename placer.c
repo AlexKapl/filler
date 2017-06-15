@@ -29,18 +29,20 @@ static void	fill_apply_strategy(t_fill *fill, size_t i, size_t j, size_t way)
 		ss = ft_abs(((int)fill->out[0] - (int)fill->pos[0]) +
 					((int)fill->out[1] - (int)fill->pos[1]));
 		gg = ft_abs(((int)fill->pos[0] - (int)i) + ((int)fill->pos[1] - (int)j));
+		if (gg > ss)
+			fill_save_out(fill, i, j);
 	}
 	else
 	{
 		ss = ft_abs(((int)fill->out[0] - (int)fill->e_pos[0]) +
 					((int)fill->out[1] - (int)fill->e_pos[1]));
 		gg = ft_abs(((int)fill->e_pos[0] - (int)i) + ((int)fill->e_pos[1] - (int)j));
+		if (gg < ss)
+			fill_save_out(fill, i, j);
 	}
-	if (gg < ss)
-		fill_save_out(fill, i, j);
 }
 
-static void	fill_check_strategy(t_fill *fill, size_t i, size_t j)
+static int	fill_check_strategy(t_fill *fill, size_t i, size_t j)
 {
 	size_t	way_out;
 	char	**m;
@@ -50,7 +52,9 @@ static void	fill_check_strategy(t_fill *fill, size_t i, size_t j)
 	y = fill->c[0];
 	x = fill->c[1];
 	m = fill->map;
-	if (m[y][x] == '.' && m[y][x + 1] == '.' && m[y + 1][x + 1] == '.' &&
+	if (!fill->sh[0])
+		return (fill_make_shield(fill, i, j));
+	else if (m[y][x] == '.' && m[y][x + 1] == '.' && m[y + 1][x + 1] == '.' &&
 		m[y + 1][x] == '.' && m[y + 1][x - 1] == '.' && m[y][x - 1] == '.' &&
 		m[y - 1][x - 1] == '.' && m[y - 1][x] == '.' && m[y - 1][x + 1] == '.')
 		way_out = 1;
@@ -60,6 +64,7 @@ static void	fill_check_strategy(t_fill *fill, size_t i, size_t j)
 	else
 		way_out = 1;
 	fill_apply_strategy(fill, i, j, way_out);
+	return (0);
 }
 
 static int	fill_check_place(t_fill *fill, size_t i, size_t j)
@@ -103,8 +108,9 @@ void		fill_place_piece(t_fill *fill)
 		{
 			if (fill_check_place(fill, i, j))
 			{
-				if (fill->out_count)
-					fill_check_strategy(fill, i, j);
+				if (fill->out_count || !fill->sh[1])
+					if (fill_check_strategy(fill, i, j))
+						return ;
 				else
 					fill_save_out(fill, i, j);
 			}

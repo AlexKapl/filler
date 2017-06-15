@@ -47,6 +47,8 @@ static void	fill_map_init(t_fill *fill)
 	fill->pos[1] = 0;
 	fill->e_pos[0] = 0;
 	fill->e_pos[1] = 0;
+	fill->sh[0] = 0;
+	fill->sh[1] = 0;
 	fill->c[0] = fill->height / 2;
 	fill->c[1] = fill->width / 2;
 }

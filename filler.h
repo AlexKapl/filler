@@ -40,6 +40,7 @@ typedef struct	s_fill
 	size_t		e_pos[2];
 	size_t		x;
 	size_t		c[2];
+	size_t		sh[2];
 	t_piece		*p;
 }				t_fill;
 
@@ -49,4 +50,5 @@ void			fill_get_info(t_fill *fill);
 void			fill_check_map(t_fill *fill);
 void			fill_free_data(t_fill *fill);
 void			fill_place_piece(t_fill *fill);
+int				fill_make_shield(t_fill *fill, size_t i, size_t j);
 #endif

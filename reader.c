@@ -47,7 +47,6 @@ static void	fill_read_piece(t_fill *fill, char *data)
 	{
 		get_line_by_line(0, &buff);
 		fill->p->place[i] = ft_strdup(buff);
-//		ft_printf("|%s|\n", fill->p->place[i]);
 		free(buff);
 		i++;
 	}
@@ -64,7 +63,6 @@ static void	fill_read_map(t_fill *fill)
 	{
 		get_line_by_line(0, &buff);
 		fill->map[i] = ft_strdup(buff + 4);
-//		ft_printf("|%s|\n", fill->map[i]);
 		free(buff);
 		i++;
 	}
