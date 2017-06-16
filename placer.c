@@ -12,7 +12,7 @@
 
 #include "filler.h"
 
-void	fill_save_out(t_fill *fill, size_t i, size_t j)
+static void	fill_save_out(t_fill *fill, size_t i, size_t j)
 {
 	fill->out[0] = i;
 	fill->out[1] = j;
@@ -24,7 +24,7 @@ static void	fill_apply_strategy(t_fill *fill, size_t i, size_t j, size_t way)
 	int		ss;
 	int		gg;
 
-	if (way)
+	if (way == 2)
 	{
 		ss = ft_abs(((int)fill->out[0] - (int)fill->pos[0]) +
 					((int)fill->out[1] - (int)fill->pos[1]));
@@ -34,9 +34,9 @@ static void	fill_apply_strategy(t_fill *fill, size_t i, size_t j, size_t way)
 	}
 	else
 	{
-		ss = ft_abs(((int)fill->out[0] - (int)fill->e_pos[0]) +
-					((int)fill->out[1] - (int)fill->e_pos[1]));
-		gg = ft_abs(((int)fill->e_pos[0] - (int)i) + ((int)fill->e_pos[1] - (int)j));
+		ss = ft_abs(((int)fill->out[0] - (int)fill->edge[0]) +
+					((int)fill->out[1] - (int)fill->pos[1]));
+		gg = ft_abs(((int)fill->edge[0] - (int)i) + ((int)fill->pos[1] - (int)j));
 		if (gg < ss)
 			fill_save_out(fill, i, j);
 	}
@@ -46,26 +46,29 @@ static int	fill_check_strategy(t_fill *fill, size_t i, size_t j)
 {
 	size_t	way_out;
 	char	**m;
-	size_t	x;
-	size_t	y;
+	int		ss;
+	int		gg;
 
-	y = fill->c[0];
-	x = fill->c[1];
 	m = fill->map;
-	if (m[y][x] == '.' && m[y][x + 1] == '.' && m[y + 1][x + 1] == '.' &&
-		m[y + 1][x] == '.' && m[y + 1][x - 1] == '.' && m[y][x - 1] == '.' &&
-		m[y - 1][x - 1] == '.' && m[y - 1][x] == '.' && m[y - 1][x + 1] == '.')
-		way_out = 1;
-	else if (m[fill->pos[0]][fill->edge[1]] == '.' &&
-			m[fill->edge[0]][fill->pos[1]] == '.')
+	if (m[fill->pos[0]][fill->edge[1]] == '.')
+	{
 		way_out = 0;
-	else
+		ss = ft_abs(((int)fill->out[0] - (int)fill->pos[0]) +
+					((int)fill->out[1] - (int)fill->edge[1]));
+		gg = ft_abs(((int)fill->pos[0] - (int)i) + ((int)fill->edge[1] - (int)j));
+		if (gg < ss)
+			fill_save_out(fill, i, j);
+	}
+	else if (m[fill->edge[0]][fill->pos[1]] == '.')
 		way_out = 1;
-	fill_apply_strategy(fill, i, j, way_out);
+	else
+		way_out = 2;
+	if (way_out)
+		fill_apply_strategy(fill, i, j, way_out);
 	return (0);
 }
 
-int			fill_check_place(t_fill *fill, size_t i, size_t j)
+static int	fill_check_place(t_fill *fill, size_t i, size_t j)
 {
 	size_t	y;
 	size_t	x;
@@ -115,5 +118,5 @@ void		fill_place_piece(t_fill *fill)
 		}
 		i++;
 	}
-	ft_printf("{fd}%zu %zu\n", 1, fill->out[0], fill->out[1]);
+	ft_printf("%zu %zu\n", fill->out[0], fill->out[1]);
 }

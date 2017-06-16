@@ -81,10 +81,7 @@ void		fill_reader(t_fill *fill)
 			fill_read_piece(fill, buff);
 			fill_drop_pos(fill);
 			fill_check_map(fill);
-			if (!fill->sh[0])
-				fill_make_shield(fill);
-			else
-				fill_place_piece(fill);
+			fill_place_piece(fill);
 			fill_free_data(fill);
 		}
 		free(buff);

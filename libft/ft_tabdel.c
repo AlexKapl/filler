@@ -14,6 +14,9 @@
 
 void	ft_tabdel(char **tab, int count)
 {
+	int i;
+
+	i = 0;
 	if (count < 0)
 	{
 		while (*tab)
@@ -25,8 +28,7 @@ void	ft_tabdel(char **tab, int count)
 	}
 	else
 	{
-		while (count)
-			free(tab[count--]);
-		ft_memdel((void**)tab);
+		while (i < count)
+			free(tab[i++]);
 	}
 }

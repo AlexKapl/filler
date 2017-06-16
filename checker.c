@@ -48,6 +48,24 @@ static void	fill_check_pos(t_fill *fill, size_t i, size_t j)
 	}
 }
 
+//static void	fill_get_max(t_fill *fill)
+//{
+//	size_t	temp;
+//
+//	temp = fill->p->height - 1;
+//	while (fill->max[0] + temp > fill->height && temp)
+//		temp--;
+//	fill->max[0] += temp;
+//	if (fill->max[0] == fill->min[0])
+//		fill->max[0]++;
+//	temp = fill->p->width - 1;
+//	while (fill->max[1] + temp > fill->width && temp)
+//		temp--;
+//	fill->max[1] += temp;
+//	if (fill->max[1] == fill->min[1])
+//		fill->max[1]++;
+//}
+
 static void	fill_get_edge(t_fill *fill)
 {
 	if (fill->min[0] <= (fill->p->height - 1))
@@ -55,21 +73,22 @@ static void	fill_get_edge(t_fill *fill)
 	else
 		fill->min[0] -= (fill->p->height - 1);
 	if (fill->min[1] <= (fill->p->width - 1))
-		fill->min[0] = 0;
+		fill->min[1] = 0;
 	else
 		fill->min[1] -= (fill->p->width - 1);
 	while (fill->max[0] + fill->p->height - 1 > fill->height)
 		fill->max[0]--;
-	while (fill->max[0] + fill->p->height - 1 < fill->height)
-		fill->max[0]++;
+//	while (fill->max[0] + fill->p->height - 1 < fill->height)
+//		fill->max[0]++;
 	if (fill->max[0] == fill->min[0])
 		fill->max[0]++;
 	while (fill->max[1] + fill->p->width - 1 > fill->width)
 		fill->max[1]--;
-	while (fill->max[1] + fill->p->width - 1 < fill->width)
-		fill->max[1]++;
+//	while (fill->max[1] + fill->p->width - 1 < fill->width)
+//		fill->max[1]++;
 	if (fill->max[1] == fill->min[1])
 		fill->max[1]++;
+//	fill_get_max(fill);
 }
 
 void fill_check_map(t_fill *fill)
