@@ -12,11 +12,16 @@
 
 #include "filler.h"
 
-static void	fill_save_out(t_fill *fill, size_t i, size_t j)
+static void	fill_operate_out(t_fill *fill, size_t i, size_t j, int save)
 {
-	fill->out[0] = i;
-	fill->out[1] = j;
-	fill->out_count++;
+	if (save)
+	{
+		fill->out[0] = i;
+		fill->out[1] = j;
+		fill->out_count++;
+	}
+	else
+		ft_printf("%zu %zu\n", fill->out[0], fill->out[1]);
 }
 
 static void	fill_apply_strategy(t_fill *fill, size_t i, size_t j, size_t way)
@@ -26,11 +31,14 @@ static void	fill_apply_strategy(t_fill *fill, size_t i, size_t j, size_t way)
 
 	if (way == 2)
 	{
-		ss = ft_abs(((int)fill->out[0] - (int)fill->pos[0]) +
-					((int)fill->out[1] - (int)fill->pos[1]));
-		gg = ft_abs(((int)fill->pos[0] - (int)i) + ((int)fill->pos[1] - (int)j));
-		if (gg > ss)
-			fill_save_out(fill, i, j);
+//		ss = ft_abs(((int)fill->out[0] - (int)fill->pos[0]) +
+//					((int)fill->out[1] - (int)fill->pos[1]));
+//		gg = ft_abs(((int)fill->pos[0] - (int)i) + ((int)fill->pos[1] - (int)j));
+		ss = ft_abs(((int)fill->out[0] - (int)fill->e_pos[0]) +
+					((int)fill->out[1] - (int)fill->e_pos[1]));
+		gg = ft_abs(((int)fill->e_pos[0] - (int)i) + ((int)fill->e_pos[1] - (int)j));
+		if (gg < ss)
+			fill_operate_out(fill, i, j, 1);
 	}
 	else
 	{
@@ -38,7 +46,7 @@ static void	fill_apply_strategy(t_fill *fill, size_t i, size_t j, size_t way)
 					((int)fill->out[1] - (int)fill->pos[1]));
 		gg = ft_abs(((int)fill->edge[0] - (int)i) + ((int)fill->pos[1] - (int)j));
 		if (gg < ss)
-			fill_save_out(fill, i, j);
+			fill_operate_out(fill, i, j, 1);
 	}
 }
 
@@ -46,24 +54,24 @@ static int	fill_check_strategy(t_fill *fill, size_t i, size_t j)
 {
 	size_t	way_out;
 	char	**m;
-	int		ss;
-	int		gg;
+//	int		ss;
+//	int		gg;
 
 	m = fill->map;
-	if (m[fill->pos[0]][fill->edge[1]] == '.')
-	{
-		way_out = 0;
-		ss = ft_abs(((int)fill->out[0] - (int)fill->pos[0]) +
-					((int)fill->out[1] - (int)fill->edge[1]));
-		gg = ft_abs(((int)fill->pos[0] - (int)i) + ((int)fill->edge[1] - (int)j));
-		if (gg < ss)
-			fill_save_out(fill, i, j);
-	}
-	else if (m[fill->edge[0]][fill->pos[1]] == '.')
-		way_out = 1;
-	else
+//	if (m[fill->pos[0]][fill->edge[1]] == '.')
+//	{
+//		way_out = 0;
+//		ss = ft_abs(((int)fill->out[0] - (int)fill->pos[0]) +
+//					((int)fill->out[1] - (int)fill->edge[1]));
+//		gg = ft_abs(((int)fill->pos[0] - (int)i) + ((int)fill->edge[1] - (int)j));
+//		if (gg < ss)
+//			fill_operate_out(fill, i, j, 1);
+//	}
+//	else if (m[fill->edge[0]][fill->pos[1]] == '.')
+//		way_out = 1;
+//	else
 		way_out = 2;
-	if (way_out)
+//	if (way_out)
 		fill_apply_strategy(fill, i, j, way_out);
 	return (0);
 }
@@ -112,11 +120,11 @@ void		fill_place_piece(t_fill *fill)
 				if (fill->out_count)
 					fill_check_strategy(fill, i, j);
 				else
-					fill_save_out(fill, i, j);
+					fill_operate_out(fill, i, j, 1);
 			}
 			j++;
 		}
 		i++;
 	}
-	ft_printf("%zu %zu\n", fill->out[0], fill->out[1]);
+	fill_operate_out(fill, 0, 0, 0);
 }
