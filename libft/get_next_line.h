@@ -25,5 +25,5 @@ typedef struct		s_mfd
 }					t_mfd;
 
 int					get_next_line(int const fd, char **line);
-int					get_line_by_line(int const fd, char **line);
+int					get_line(int const fd, char **line);
 #endif

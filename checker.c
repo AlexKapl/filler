@@ -6,7 +6,7 @@
 /*   By: akaplyar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:26:11 by akaplyar          #+#    #+#             */
-/*   Updated: 2017/05/11 16:26:12 by akaplyar         ###   ########.fr       */
+/*   Updated: 2017/06/23 17:46:11 by akaplyar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		fill_drop_pos(t_fill *fill)
 	fill->out[1] = 0;
 }
 
-static void	fill_check_pos(t_fill *fill, size_t i, size_t j)
+static void	fill_check_pos(t_fill *fill, int i, int j)
 {
 	if (fill->min[0] > i)
 		fill->min[0] = i;
@@ -37,14 +37,6 @@ static void	fill_check_pos(t_fill *fill, size_t i, size_t j)
 	{
 		fill->pos[0] = i;
 		fill->pos[1] = j;
-		if (fill->pos[0] > fill->c[0])
-			fill->edge[0] = 0;
-		else
-			fill->edge[0] = fill->height - 1;
-		if (fill->pos[1] > fill->c[1])
-			fill->edge[1] = 0;
-		else
-			fill->edge[1] = fill->width - 1;
 	}
 }
 
@@ -58,20 +50,12 @@ static void	fill_get_edge(t_fill *fill)
 		fill->min[1] = 0;
 	else
 		fill->min[1] -= (fill->p->width - 1);
-	while (fill->max[0] + fill->p->height - 1 > fill->height)
-		fill->max[0]--;
-	if (fill->max[0] == fill->min[0])
-		fill->max[0]++;
-	while (fill->max[1] + fill->p->width - 1 > fill->width)
-		fill->max[1]--;
-	if (fill->max[1] == fill->min[1])
-		fill->max[1]++;
 }
 
-void fill_check_map(t_fill *fill)
+void		fill_check_map(t_fill *fill)
 {
-	size_t i;
-	size_t j;
+	int i;
+	int j;
 
 	i = 0;
 	while (i < fill->height)
@@ -80,9 +64,9 @@ void fill_check_map(t_fill *fill)
 		while (j < fill->width)
 		{
 			if (ft_toupper(fill->map[i][j]) == fill->fig)
-				fill_check_pos(fill, i ,j);
+				fill_check_pos(fill, i, j);
 			else if (fill->map[i][j] != '.'
-					 && !fill->e_pos[0] && !fill->e_pos[1])
+					&& !fill->e_pos[0] && !fill->e_pos[1])
 			{
 				fill->e_pos[0] = i;
 				fill->e_pos[1] = j;

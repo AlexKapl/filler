@@ -28,7 +28,7 @@ static size_t	count(const char *s, char c)
 		}
 		if (*s && *s == c)
 		{
-			j += flag;
+			j++;
 			flag = 0;
 			s++;
 		}

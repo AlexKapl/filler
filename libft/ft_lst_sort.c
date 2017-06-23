@@ -12,8 +12,8 @@
 
 #include "libft.h"
 
-static void	ft_lst_check_begin(t_list **begin, int(*f)(void *e1, void *e2),
-								  int *count, int max)
+static void	ft_lst_check_begin(t_list **begin, int (*f)(void *e1, void *e2),
+								int *count, int max)
 {
 	t_list	*cur;
 	t_list	*next;

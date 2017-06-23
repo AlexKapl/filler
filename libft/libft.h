@@ -14,6 +14,7 @@
 # define LIBFT_H
 # include "get_next_line.h"
 # include "ft_printf/ft_printf.h"
+# include "stack_queue/stack_queue.h"
 # include "hsv.h"
 # include <stdlib.h>
 # include <unistd.h>
@@ -27,6 +28,8 @@ typedef struct		s_list
 
 t_list				*ft_lstnew(void const *content, size_t content_size);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+t_list				*ft_lstnew_struct(void const *content, size_t content_size,
+								int (*f)(void const *, size_t, t_list **));
 void				ft_lstadd(t_list **alst, t_list *new_node);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
@@ -59,6 +62,7 @@ void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 void				ft_strcapitalizer(char *str);
 void				ft_int_sort(int *tab, size_t size);
 void				ft_tabdel(char **tab, int count);
+int					ft_tabcount(char **tab);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 int					ft_atoi(const char *str);
 int					ft_atoi_base(const char *str, int base);

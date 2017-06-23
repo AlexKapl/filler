@@ -23,10 +23,10 @@ static void	print_winner(char *buff)
 	int		soviet;
 
 	soviet = ft_atoi(buff + 9);
-	get_line_by_line(0, &buff);
+	get_line(0, &buff);
 	nazi = ft_atoi(buff + 9);
 	free(buff);
-	printf("\e[34mNAZI == %d\n\e[31mSOVIET == %d\e[0m\n", nazi, soviet);
+	printf("\e[31mSOVIET == %d\n\e[34mNAZI == %d\e[0m\n", soviet, nazi);
 	if (nazi > soviet)
 	{
 		printf("\e[34m NN    NN     NN     NNNNNNNN NN "
@@ -74,7 +74,7 @@ static void	read_map(int size[2])
 	int			j;
 
 	j = -1;
-	get_line_by_line(0, &buff);
+	get_line(0, &buff);
 	free(buff);
 	if (!line)
 	{
@@ -84,7 +84,7 @@ static void	read_map(int size[2])
 	printf(" \e[33m%s\n\e[0m", line);
 	while (++j < size[0])
 	{
-		get_line_by_line(0, &buff);
+		get_line(0, &buff);
 		print_line(ft_strdup(buff + 4));
 		free(buff);
 	}
@@ -99,7 +99,7 @@ int			main()
 	buff = NULL;
 	size[0] = -1;
 	setlocale(LC_ALL, "");
-	while (get_line_by_line(0, &buff))
+	while (get_line(0, &buff))
 	{
 		if (buff[1] == 'l')
 		{

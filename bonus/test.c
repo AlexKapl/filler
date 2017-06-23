@@ -3,18 +3,29 @@
 #include "wchar.h"
 #include "locale.h"
 
-int			main()
-{
-	wchar_t nazi;
-	wchar_t soviet;
-	wchar_t unit;
-	wchar_t *w;
+//int			main()
+//{
+//	wchar_t nazi;
+//	wchar_t soviet;
+//	wchar_t unit;
+//	wchar_t *w;
+//
+//	setlocale(LC_ALL, "");
+//	nazi = L'࿖';
+//	soviet = L'☭';
+//	unit = L'∞';
+//	w = L"ઍઐઑઔએઐઑઔઍઐઑઔએઐઑઔઍઐઑઔએઐઑઔઍઐઑઔએઐઑઔ";
+//	printf("\e[34m%lc\e[0m \e[31m%lc\e[0m\n", nazi, soviet);
+//	printf("%ls\n", w);
+//}
 
-	setlocale(LC_ALL, "");
-	nazi = L'࿖';
-	soviet = L'☭';
-	unit = L'∞';
-	w = L"ઍઐઑઔએઐઑઔઍઐઑઔએઐઑઔઍઐઑઔએઐઑઔઍઐઑઔએઐઑઔ";
-	printf("\e[34m%lc\e[0m \e[31m%lc\e[0m\n", nazi, soviet);
-	printf("%ls\n", w);
+
+int				main()
+{
+	int			i;
+
+	i = 0;
+	while (i < 10)
+		printf("%d\n", i++);
+	return 0;
 }

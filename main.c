@@ -6,17 +6,28 @@
 /*   By: akaplyar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:26:50 by akaplyar          #+#    #+#             */
-/*   Updated: 2017/05/11 16:26:51 by akaplyar         ###   ########.fr       */
+/*   Updated: 2017/06/23 17:46:36 by akaplyar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
+void		fill_operate_out(t_fill *fill, int i, int j, int save)
+{
+	if (save)
+	{
+		fill->out[0] = i;
+		fill->out[1] = j;
+		fill->out_count++;
+	}
+	else
+		ft_printf("%zu %zu\n", fill->out[0], fill->out[1]);
+}
 
 void		fill_free_data(t_fill *fill)
 {
-	ft_tabdel(fill->map, (int)fill->height);
-	ft_tabdel(fill->p->place, (int)fill->p->height);
+	ft_tabdel(fill->map, fill->height);
+	ft_tabdel(fill->p->place, fill->p->height);
 }
 
 static void	fill_map_init(t_fill *fill)
@@ -30,7 +41,7 @@ static void	fill_map_init(t_fill *fill)
 	fill->c[1] = fill->width / 2;
 }
 
-int			main()
+int			main(void)
 {
 	t_fill	fill;
 
