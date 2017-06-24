@@ -14,8 +14,6 @@
 
 void		fill_drop_pos(t_fill *fill)
 {
-	fill->max[0] = 0;
-	fill->max[1] = 0;
 	fill->min[0] = fill->height - 1;
 	fill->min[1] = fill->width - 1;
 	fill->out_count = 0;
@@ -29,14 +27,24 @@ static void	fill_check_pos(t_fill *fill, int i, int j)
 		fill->min[0] = i;
 	if (fill->min[1] > j)
 		fill->min[1] = j;
-	if (fill->max[0] < i)
-		fill->max[0] = i;
-	if (fill->max[1] < j)
-		fill->max[1] = j;
 	if (!fill->pos[0] && !fill->pos[1])
 	{
 		fill->pos[0] = i;
 		fill->pos[1] = j;
+		if (i < fill->c[0])
+		{
+			if (j < fill->c[1])
+				fill->q = 1;
+			else
+				fill->q = 2;
+		}
+		else
+		{
+			if (j >= fill->c[1])
+				fill->q = 3;
+			else
+				fill->q = 4;
+		}
 	}
 }
 

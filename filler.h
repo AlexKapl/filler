@@ -32,11 +32,11 @@ typedef struct	s_fill
 	int			width;
 	int			pos[2];
 	int			min[2];
-	int			max[2];
 	int			out[2];
 	int			out_count;
 	int			e_pos[2];
 	int			x;
+	int 		q;
 	int			c[2];
 	t_piece		*p;
 }				t_fill;

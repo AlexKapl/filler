@@ -42,7 +42,7 @@ static void	fill_read_piece(t_fill *fill, char *data)
 	fill->p->height = ft_atoi(tmp[1]);
 	fill->p->width = ft_atoi(tmp[2]);
 	ft_tabdel(tmp, -1);
-	fill->p->place = (char**)malloc(sizeof(char*) * fill->p->height);
+	fill->p->place = (char**)malloc(sizeof(char*) * (fill->p->height + 1));
 	while (i < fill->p->height)
 	{
 		get_line(0, &buff);
@@ -50,6 +50,7 @@ static void	fill_read_piece(t_fill *fill, char *data)
 		free(buff);
 		i++;
 	}
+	fill->p->place[i] = NULL;
 }
 
 static void	fill_read_map(t_fill *fill)
@@ -58,7 +59,7 @@ static void	fill_read_map(t_fill *fill)
 	char	*buff;
 
 	i = 0;
-	fill->map = (char**)malloc(sizeof(char*) * fill->height);
+	fill->map = (char**)malloc(sizeof(char*) * (fill->height + 1));
 	while (i < fill->height)
 	{
 		get_line(0, &buff);
@@ -66,6 +67,7 @@ static void	fill_read_map(t_fill *fill)
 		free(buff);
 		i++;
 	}
+	fill->map[i] = NULL;
 }
 
 void		fill_reader(t_fill *fill)

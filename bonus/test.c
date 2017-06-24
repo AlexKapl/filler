@@ -19,13 +19,38 @@
 //	printf("%ls\n", w);
 //}
 
+static void	ft_tabdeli(char **tab, int count)
+{
+	int i;
+
+	i = 0;
+	if (count < 0)
+		while (tab[i])
+			free(tab[i++]);
+	else
+		while (i < count)
+			free(tab[i++]);
+	free(tab);
+}
+
+static void		omfg(char *buff)
+{
+	free(buff);
+	printf("freed\n");
+}
 
 int				main()
 {
 	int			i;
+	char		**tab;
+	char		*buff;
 
 	i = 0;
-	while (i < 10)
-		printf("%d\n", i++);
+	tab = (char**)malloc(sizeof(char*) * 100);
+	while (i < 100)
+		tab[i++] = ft_strdup("...................................................................................................");
+	buff = ft_strdup("...................................................................................................");
+	ft_tabdeli(tab, 100);
+	omfg(buff);
 	return 0;
 }

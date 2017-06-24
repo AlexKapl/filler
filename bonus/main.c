@@ -23,9 +23,9 @@ static void	print_winner(char *buff)
 	int		soviet;
 
 	soviet = ft_atoi(buff + 9);
+	free(buff);
 	get_line(0, &buff);
 	nazi = ft_atoi(buff + 9);
-	free(buff);
 	printf("\e[31mSOVIET == %d\n\e[34mNAZI == %d\e[0m\n", soviet, nazi);
 	if (nazi > soviet)
 	{

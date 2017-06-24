@@ -26,8 +26,8 @@ void		fill_operate_out(t_fill *fill, int i, int j, int save)
 
 void		fill_free_data(t_fill *fill)
 {
-	ft_tabdel(fill->map, fill->height);
-	ft_tabdel(fill->p->place, fill->p->height);
+	ft_tabdel(fill->map, -1);
+	ft_tabdel(fill->p->place, -1);
 }
 
 static void	fill_map_init(t_fill *fill)
@@ -39,6 +39,7 @@ static void	fill_map_init(t_fill *fill)
 	fill->e_pos[1] = 0;
 	fill->c[0] = fill->height / 2;
 	fill->c[1] = fill->width / 2;
+	fill->q = 0;
 }
 
 int			main(void)
