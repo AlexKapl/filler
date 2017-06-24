@@ -6,7 +6,7 @@
 /*   By: akaplyar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:26:16 by akaplyar          #+#    #+#             */
-/*   Updated: 2017/06/23 17:49:32 by akaplyar         ###   ########.fr       */
+/*   Updated: 2017/06/23 18:00:19 by akaplyar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	fill_check_cords(t_fill *fill, int i, int j)
 	return (1);
 }
 
-static int	fill_check_place(t_fill *fill, int i, int j)
+int			fill_check_place(t_fill *fill, int i, int j)
 {
 	int	y;
 	int	x;

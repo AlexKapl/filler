@@ -6,7 +6,7 @@
 /*   By: akaplyar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 16:26:35 by akaplyar          #+#    #+#             */
-/*   Updated: 2017/06/23 17:51:45 by akaplyar         ###   ########.fr       */
+/*   Updated: 2017/06/23 17:59:20 by akaplyar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct	s_fill
 }				t_fill;
 
 int				fill_make_shield(t_fill *fill);
+int				fill_check_place(t_fill *fill, int i, int j);
 void			fill_reader(t_fill *fill);
 void			fill_drop_pos(t_fill *fill);
 void			fill_get_info(t_fill *fill);

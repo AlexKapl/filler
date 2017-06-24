@@ -6,7 +6,7 @@
 #    By: akaplyar <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/29 11:15:59 by akaplyar          #+#    #+#              #
-#    Updated: 2017/06/09 17:05:20 by akaplyar         ###   ########.fr        #
+#    Updated: 2017/06/23 17:56:10 by akaplyar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 MAKE_LIB = $(MAKE) -C $(LIB_PATH)
 
-OBJ = main.o reader.o checker.o placer.o
+OBJ = main.o reader.o checker.o placer.o protector.o
 
 .PHONY: clean fclean re
 
@@ -33,12 +33,6 @@ all:  lib $(OBJ) $(NAME)
 $(NAME):
 	$(CC) -o $(NAME) $(OBJ) -I $(HEADER) $(LIB_PATH)libft.a
 	@echo "\x1B[32m\0filler created\x1B[0m\0"
-
-fill:
-	./resources/filler_vm -f resources/maps/map00 -p1 resources/players/carli.filler -p2 ./filler
-
-fil:
-	./resources/filler_vm -f resources/maps/map00 -p1 resources/players/carli.filler -p2 ./filler_bonus/filler
 
 $(OBJ): $(HEADER)
 
