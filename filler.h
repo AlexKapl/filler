@@ -38,8 +38,6 @@ typedef struct	s_fill
 	int			c[2];
 	int			x;
 	int 		q;
-	int 		fd;
-	int 		fd1;
 	t_piece		*p;
 }				t_fill;
 

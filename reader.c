@@ -17,13 +17,10 @@ void		ft_tabdelz(char ***tab, int count)
 	int		i;
 
 	i = 0;
-	return;
 	if (count < 0)
 		while ((*tab)[i])
 		{
-//			ft_printf("|%s|\n", *(*(tab) + i));
 			free((*tab)[i]);
-//			ft_printf("freed\n");
 			i++;
 		}
 	else
@@ -96,13 +93,11 @@ void		fill_get_info(t_fill *fill)
 	char	**tab;
 
 	buff = NULL;
-	gnl(fill->fd, &buff);
-//	ft_printf("{fd}%s\n", fill->fd1, buff);
+	gnl(0, &buff);
 	tmp = ft_strchr(buff, 'p');
 	fill->fig = (char)(*(tmp + 1) == '2' ? 'X' : 'O');
 	ft_strdel(&buff);
-	gnl(fill->fd, &buff);
-//	ft_printf("{fd}%s\n", fill->fd1, buff);
+	gnl(0, &buff);
 	tab = ft_strsplit(buff, ' ');
 	fill->height = ft_atoi(tab[1]);
 	fill->width = ft_atoi(tab[2]);
@@ -120,8 +115,7 @@ static void	fill_read_piece(t_fill *fill)
 
 	i = 0;
 	buff = NULL;
-	gnl(fill->fd, &buff);
-//	ft_printf("{fd}%s\n", fill->fd1, buff);
+	gnl(0, &buff);
 	tmp = ft_strsplit(buff, ' ');
 	fill->p->height = ft_atoi(tmp[1]);
 	fill->p->width = ft_atoi(tmp[2]);
@@ -129,14 +123,11 @@ static void	fill_read_piece(t_fill *fill)
 	ft_tabdelz(&tmp, -1);
 	if (fill->p->place)
 		ft_tabdelz(&fill->p->place, -1);
-	if (!(fill->p->place = (char**)malloc(sizeof(char*) * (fill->p->height + 1))))
-		exit(0);
+	fill->p->place = (char**)malloc(sizeof(char*) * (fill->p->height + 1));
 	while (i < fill->p->height)
 	{
-		gnl(fill->fd, &buff);
+		gnl(0, &buff);
 		fill->p->place[i] = ft_strdup(buff);
-//		ft_printf("{fd}%s\n", fill->fd1, buff);
-		ft_printf("{fd}%s\n", fill->fd1, fill->p->place[i]);
 		ft_strdel(&buff);
 		i++;
 	}
@@ -152,14 +143,11 @@ static t_fill	*fill_read_map(t_fill *fill)
 	buff = NULL;
 	if (fill->map)
 		ft_tabdelz(&fill->map, -1);
-	if (!(fill->map = (char**)malloc(sizeof(char*) * (fill->height + 1))))
-		exit(0);
+	fill->map = (char**)malloc(sizeof(char*) * (fill->height + 1));
 	while (i < fill->height)
 	{
-		gnl(fill->fd, &buff);
+		gnl(0, &buff);
 		fill->map[i] = ft_strdup(buff + 4);
-//		ft_printf("{fd}%s\n", fill->fd1, buff);
-		ft_printf("{fd}|%s|%d\n", fill->fd1, fill->map[i], i);
 		ft_strdel(&buff);
 		i++;
 	}
@@ -170,20 +158,12 @@ static t_fill	*fill_read_map(t_fill *fill)
 void		fill_reader(t_fill *fill)
 {
 	char	*buff;
-	int		i;
 
-	while (gnl(fill->fd, &buff) > 0)
+	while (gnl(0, &buff) > 0)
 	{
-//		ft_printf("{fd}%s\n", fill->fd1, buff);
 		if (*buff == ' ')
 		{
 			fill = fill_read_map(fill);
-			i = 0;
-			while (i < fill->height)
-			{
-				ft_printf("{fd}|%s|%d\n", fill->fd1, fill->map[i], i);
-				i++;
-			}
 			fill_read_piece(fill);
 			fill_check_map(fill);
 			fill_place_piece(fill);

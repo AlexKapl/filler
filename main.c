@@ -35,8 +35,6 @@ static void	fill_map_init(t_fill *fill)
 	fill->p->place = NULL;
 	fill->p->height = 0;
 	fill->p->width = 0;
-	fill->fd = open("sample", O_RDONLY);
-	fill->fd1 = open("uuu", O_WRONLY);
 }
 
 void		fill_operate_out(t_fill *fill, int i, int j, int save)
@@ -59,12 +57,10 @@ void		fill_operate_out(t_fill *fill, int i, int j, int save)
 
 int			main(void)
 {
-	t_fill	*fill;
+	t_fill	fill;
 
-	if (!(fill = (t_fill*)malloc(sizeof(t_fill))))
-		return (0);
-	fill_map_init(fill);
-	fill_get_info(fill);
-	fill_reader(fill);
+	fill_map_init(&fill);
+	fill_get_info(&fill);
+	fill_reader(&fill);
 	return (0);
 }
