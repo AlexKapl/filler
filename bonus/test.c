@@ -33,6 +33,18 @@ static void	ft_tabdeli(char **tab, int count)
 	free(tab);
 }
 
+static void		lol(char ***omg)
+{
+	int 		i;
+
+	i = 0;
+	while (i < 100)
+	{
+		printf("|%s|\n", (*omg)[i]);
+		i++;
+	}
+}
+
 static void		omfg(char *buff)
 {
 	free(buff);
@@ -48,8 +60,12 @@ int				main()
 	i = 0;
 	tab = (char**)malloc(sizeof(char*) * 100);
 	while (i < 100)
-		tab[i++] = ft_strdup("...................................................................................................");
+	{
+		tab[i] = ft_llitoa(i);
+		i++;
+	}
 	buff = ft_strdup("...................................................................................................");
+	lol(&tab);
 	ft_tabdeli(tab, 100);
 	omfg(buff);
 	return 0;

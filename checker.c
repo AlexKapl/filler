@@ -12,13 +12,23 @@
 
 #include "filler.h"
 
-void		fill_drop_pos(t_fill *fill)
+static void	fill_drop_pos(t_fill *fill)
 {
 	fill->min[0] = fill->height - 1;
 	fill->min[1] = fill->width - 1;
 	fill->out_count = 0;
 	fill->out[0] = 0;
 	fill->out[1] = 0;
+}
+
+static void	fill_get_edge(t_fill *fill)
+{
+	fill->min[0] -= (fill->p->height - 1);
+	if (fill->min[0] < 0)
+		fill->min[0] = 0;
+	fill->min[1] -= (fill->p->width - 1);
+	if (fill->min[1] < 0)
+		fill->min[1] = 0;
 }
 
 static void	fill_check_pos(t_fill *fill, int i, int j)
@@ -48,24 +58,13 @@ static void	fill_check_pos(t_fill *fill, int i, int j)
 	}
 }
 
-static void	fill_get_edge(t_fill *fill)
-{
-	if (fill->min[0] <= (fill->p->height - 1))
-		fill->min[0] = 0;
-	else
-		fill->min[0] -= (fill->p->height - 1);
-	if (fill->min[1] <= (fill->p->width - 1))
-		fill->min[1] = 0;
-	else
-		fill->min[1] -= (fill->p->width - 1);
-}
-
 void		fill_check_map(t_fill *fill)
 {
 	int i;
 	int j;
 
 	i = 0;
+	fill_drop_pos(fill);
 	while (i < fill->height)
 	{
 		j = 0;
@@ -73,8 +72,8 @@ void		fill_check_map(t_fill *fill)
 		{
 			if (ft_toupper(fill->map[i][j]) == fill->fig)
 				fill_check_pos(fill, i, j);
-			else if (fill->map[i][j] != '.'
-					&& !fill->e_pos[0] && !fill->e_pos[1])
+			else if ((!fill->e_pos[0] && !fill->e_pos[1])
+					 && fill->map[i][j] != '.')
 			{
 				fill->e_pos[0] = i;
 				fill->e_pos[1] = j;

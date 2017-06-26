@@ -40,7 +40,7 @@ int			fill_check_place(t_fill *fill, int i, int j)
 		x = 0;
 		while (x < fill->p->width)
 		{
-			if (fill->p->place[y][x] != '.')
+			if (fill->p->place[y][x] == '*')
 				if (!(fill_check_cords(fill, i + y, j + x)))
 					return (0);
 			x++;
