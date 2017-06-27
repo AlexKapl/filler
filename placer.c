@@ -52,14 +52,14 @@ int			fill_check_place(t_fill *fill, int i, int j)
 
 static int	fill_check_strategy(t_fill *fill, int i, int j)
 {
-	int		ss;
-	int		gg;
+	int		prev;
+	int		curr;
 
-	ss = ft_abs((fill->out[0] - fill->e_pos[0]) +
+	prev = ft_abs((fill->out[0] - fill->e_pos[0]) +
 				(fill->out[1] - fill->e_pos[1]));
-	gg = ft_abs((fill->e_pos[0] - i) +
+	curr= ft_abs((fill->e_pos[0] - i) +
 				(fill->e_pos[1] - j));
-	if (gg < ss)
+	if (curr< prev)
 		fill_operate_out(fill, i, j, 1);
 	return (0);
 }

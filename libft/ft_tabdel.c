@@ -12,23 +12,23 @@
 
 #include "libft.h"
 
-void	ft_tabdel(char **tab, int count)
+void		ft_tabdel(char ***tab, int count)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	if (count < 0)
-		while (tab[i])
+		while ((*tab)[i])
 		{
-			free(tab[i]);
+			free((*tab)[i]);
 			i++;
 		}
 	else
 		while (i < count)
 		{
-			free(tab[i]);
+			free((*tab)[i]);
 			i++;
 		}
-	free(tab);
-	tab = NULL;
+	free(*tab);
+	*tab = NULL;
 }

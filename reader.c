@@ -12,78 +12,12 @@
 
 #include "filler.h"
 
-void		ft_tabdelz(char ***tab, int count)
+static void	fill_clean(t_fill *fill)
 {
-	int		i;
-
-	i = 0;
-	if (count < 0)
-		while ((*tab)[i])
-		{
-			free((*tab)[i]);
-			i++;
-		}
-	else
-		while (i < count)
-		{
-			free((*tab)[i]);
-			i++;
-		}
-	free(*tab);
-	*tab = NULL;
-}
-
-static int		gnl_make_line(char **buffer, char **line)
-{
-	char		*end;
-	char		*tmp;
-
-	if ((end = ft_strchr(*buffer, '\n')))
-	{
-		*end = '\0';
-		*line = ft_strdup(*buffer);
-		tmp = *buffer;
-		if (*(end + 1))
-			*buffer = ft_strdup(end + 1);
-		else
-			*buffer = ft_strnew(0);
-		free(tmp);
-		return (1);
-	}
-	else if (**buffer)
-	{
-		*line = ft_strdup(*buffer);
-		tmp = *buffer;
-		*buffer = ft_strnew(0);
-		free(tmp);
-		return (1);
-	}
-	return (0);
-}
-
-int				gnl(int const fd, char **line)
-{
-	static char	*buffer = NULL;
-	char		buff[BUFF_SIZE + 1];
-	char		*tmp;
-	int			ret;
-
-	if (!line || fd < 0)
-		return (-1);
-	if (!buffer)
-		buffer = ft_strnew(0);
-	while (!(ft_strchr(buffer, '\n')))
-	{
-		if ((ret = read(fd, buff, BUFF_SIZE)) < 0)
-			return (-1);
-		if (!ret)
-			return (gnl_make_line(&buffer, line));
-		buff[ret] = '\0';
-		tmp = buffer;
-		buffer = ft_strjoin(tmp, buff);
-		free(tmp);
-	}
-	return (gnl_make_line(&buffer, line));
+	if (fill->map)
+		ft_tabdel(&fill->map, -1);
+	if (fill->p->place)
+		ft_tabdel(&fill->p->place, -1);
 }
 
 void		fill_get_info(t_fill *fill)
@@ -93,17 +27,17 @@ void		fill_get_info(t_fill *fill)
 	char	**tab;
 
 	buff = NULL;
-	gnl(0, &buff);
+	get_next_line(0, &buff);
 	tmp = ft_strchr(buff, 'p');
 	fill->fig = (char)(*(tmp + 1) == '2' ? 'X' : 'O');
 	ft_strdel(&buff);
-	gnl(0, &buff);
+	get_next_line(0, &buff);
 	tab = ft_strsplit(buff, ' ');
 	fill->height = ft_atoi(tab[1]);
 	fill->width = ft_atoi(tab[2]);
 	fill->c[0] = fill->height / 2;
 	fill->c[1] = fill->width / 2;
-	ft_tabdelz(&tab, -1);
+	ft_tabdel(&tab, -1);
 	ft_strdel(&buff);
 }
 
@@ -115,18 +49,16 @@ static void	fill_read_piece(t_fill *fill)
 
 	i = 0;
 	buff = NULL;
-	gnl(0, &buff);
+	get_next_line(0, &buff);
 	tmp = ft_strsplit(buff, ' ');
 	fill->p->height = ft_atoi(tmp[1]);
 	fill->p->width = ft_atoi(tmp[2]);
 	ft_strdel(&buff);
-	ft_tabdelz(&tmp, -1);
-	if (fill->p->place)
-		ft_tabdelz(&fill->p->place, -1);
+	ft_tabdel(&tmp, -1);
 	fill->p->place = (char**)malloc(sizeof(char*) * (fill->p->height + 1));
 	while (i < fill->p->height)
 	{
-		gnl(0, &buff);
+		get_next_line(0, &buff);
 		fill->p->place[i] = ft_strdup(buff);
 		ft_strdel(&buff);
 		i++;
@@ -141,12 +73,10 @@ static t_fill	*fill_read_map(t_fill *fill)
 
 	i = 0;
 	buff = NULL;
-	if (fill->map)
-		ft_tabdelz(&fill->map, -1);
 	fill->map = (char**)malloc(sizeof(char*) * (fill->height + 1));
 	while (i < fill->height)
 	{
-		gnl(0, &buff);
+		get_next_line(0, &buff);
 		fill->map[i] = ft_strdup(buff + 4);
 		ft_strdel(&buff);
 		i++;
@@ -159,7 +89,7 @@ void		fill_reader(t_fill *fill)
 {
 	char	*buff;
 
-	while (gnl(0, &buff) > 0)
+	while (get_next_line(0, &buff) > 0)
 	{
 		if (*buff == ' ')
 		{
@@ -167,6 +97,7 @@ void		fill_reader(t_fill *fill)
 			fill_read_piece(fill);
 			fill_check_map(fill);
 			fill_place_piece(fill);
+			fill_clean(fill);
 		}
 		ft_strdel(&buff);
 	}

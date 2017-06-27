@@ -12,12 +12,12 @@
 
 #ifndef LIBFT_H
 # define LIBFT_H
-# include "get_next_line.h"
+# include "hsv.h"
 # include "ft_printf/ft_printf.h"
 # include "stack_queue/stack_queue.h"
-# include "hsv.h"
 # include <stdlib.h>
 # include <unistd.h>
+# define BUFF_SIZE 100
 
 typedef struct		s_list
 {
@@ -61,7 +61,7 @@ void				ft_striter(char *s, void (*f)(char *));
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 void				ft_strcapitalizer(char *str);
 void				ft_int_sort(int *tab, size_t size);
-void				ft_tabdel(char **tab, int count);
+void				ft_tabdel(char ***tab, int count);
 int					ft_tabcount(char **tab);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 int					ft_atoi(const char *str);
@@ -79,6 +79,7 @@ int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_strequ(const char *s1, const char *s2);
 int					ft_strnequ(const char *s1, const char *s2, size_t n);
+int					get_next_line(int const fd, char **line);
 size_t				ft_strlen(const char *s);
 size_t				ft_lstcount(t_list *begin);
 size_t				ft_strlcat(char *restrict dst, const char *restrict src,
